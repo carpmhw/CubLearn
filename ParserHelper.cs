@@ -17,15 +17,29 @@ public class ParserHelper
         public string Referer { set; get; }
         public string Browser { set; get; } 
         public string OriginLine { set; get; }
+        public int PrivilegeLevel {set; get; }
+    }
+
+    private int SetRecPrivilege(string request)
+    {
+        string [] hightLevel = new string[] { "GET /robots.txt HTTP/1.1" ,  "GET /projects/xdotool/ HTTP/1.1" };
+
+        for(int i=0; i<hightLevel.Length; i++){
+            if(hightLevel[i] == request) {
+                return i + 1;
+            }
+        }
+
+        return 9999;
     }
 
     public void ParseFile(string fileName)    
     {
         //https://dotnet-snippets.de/snippet/apache-log-file-parsen-regex/5969
-        string logEntryPattern = "^([\\d.]+) (\\S+) (\\S+) \\[([\\w:/]+\\s[+\\-]\\d{4})\\] \"(.+?)\" (\\d{3}) (\\d+) \"([^\"]+)\" \"([^\"]+)\"";
+        string logEntryPattern = "^([\\d.]+) (\\S+) (\\S+) \\[([\\w:/]+\\s[+\\-]\\d{4})\\] \"(.+?)\" (\\d{3}) (\\d+|-) \"([^\"]+)\" \"([^\"]+)\"";
 
-        DateTime CheckStartTime = new DateTime(2015, 5, 20, 21, 05, 20);
-        DateTime CheckEndTime = new DateTime(2015, 5, 20, 21, 05, 27);      
+        DateTime CheckStartTime = new DateTime(2015, 5, 21, 5, 05, 20);
+        DateTime CheckEndTime = new DateTime(2015, 5, 21, 5, 06, 20);      
 
         List<LogItem> list = new List<LogItem>();
         using (StreamReader sr = File.OpenText(fileName))
@@ -62,7 +76,8 @@ public class ParserHelper
                         BytesSent = regexMatch.Groups[7].Value,
                         Referer = referer,
                         Browser = regexMatch.Groups[9].Value,
-                        OriginLine = s
+                        OriginLine = s,
+                        PrivilegeLevel = SetRecPrivilege(regexMatch.Groups[5].Value)
                     }
                 );
             }            
@@ -81,12 +96,20 @@ public class ParserHelper
         sb.AppendLine("<span style='font-weight:bolder; margin-left:10px;'>Web01</span>");
         sb.AppendLine("</td></tr>");
 
-        sb.AppendLine("<tr><td valign='top'><ol style='font-size:12px'>"); 
-        foreach (var Item in list.OrderBy(m => m.DateTime))
-        {                
-            sb.AppendLine($"<li>{Item.OriginLine}</li>");
-        }
-        sb.AppendLine("</ol></td></tr>");
+        var resultList = list.OrderBy(m => m.PrivilegeLevel).ThenBy(m => m.Request)
+                             .GroupBy(m => m.Request)
+                             .ToDictionary(o => o.Key, o => o.ToList());
+                             
+        foreach(var key in resultList.Keys){
+            sb.AppendFormat("<tr><td valign='top'><span style='padding-top:8px; font-size:12px; font-weight:bolder; margin-left:10px;'>{0} ({1}筆)</span></td></tr>", key, resultList[key].Count);
+
+            sb.AppendLine("<tr><td valign='top'><ol style='padding-top:8px; font-size:12px'>"); 
+            foreach (var Item in resultList[key].OrderBy(m => m.DateTime))
+            {                
+                sb.AppendLine($"<li>{Item.OriginLine}</li>");
+            }
+            sb.AppendLine("</ol></td></tr>");
+        }    
 
         sb.AppendLine("</table>");
 
