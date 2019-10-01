@@ -7,6 +7,8 @@ using System.Text;
 
 public class ParserHelper
 {
+    private List<SubtotalItem> SummaryList { set; get; } = new List<SubtotalItem>();
+
     public class LogItem
     {
         public string IPAddress { set; get; }
@@ -18,6 +20,37 @@ public class ParserHelper
         public string Browser { set; get; } 
         public string OriginLine { set; get; }
         public int PrivilegeLevel {set; get; }
+    }
+
+    public class SubtotalItem
+    {
+        public class SubtotalCount
+        {
+            public int Total { set; get;}
+            public int Error502 { set; get;}
+            public SubtotalCount()
+            {
+                Total = 0;
+                Error502 = 0;
+            }
+        }
+
+        public string ServerName { get; set; }
+        public Dictionary<string, SubtotalCount> SummaryData { get; set; }
+        public SubtotalItem(string serverName)
+        {
+            ServerName = serverName;
+            SummaryData = new Dictionary<string, SubtotalCount>();
+            SummaryData.Add("robots", new SubtotalCount());
+            SummaryData.Add("xdotool", new SubtotalCount());
+            SummaryData.Add("Others", new SubtotalCount());       
+        }
+
+        public void Statistics(string apiName, string reaponse)
+        {
+            SummaryData[apiName].Total++;
+            if(reaponse == "502") {  SummaryData[apiName].Error502++; } 
+        }
     }
 
     private int SetRecPrivilege(string request)
@@ -83,13 +116,47 @@ public class ParserHelper
             }            
         }
 
+        SubtotalItem subtotal = new SubtotalItem("Test");
+        foreach(var i in list) {
+            string apiName = "Others";
+            if (i.Request == "GET /robots.txt HTTP/1.1") { apiName = "robots"; } 
+            if (i.Request == "GET /projects/xdotool/ HTTP/1.1") { apiName = "xdotool" ;} 
+            subtotal.Statistics(apiName, i.Response);
+        }
+        SummaryList.Add(subtotal);
+    
         CreateHtmlFile(list);
         SendMail();
     }
 
-    public void CreateHtmlFile(IEnumerable<LogItem> list) {
+    private void AppendSummaryToHtml(StringBuilder main) 
+    {
+         StringBuilder sb = new StringBuilder();
+         sb.AppendLine("<table width='100%' border='1' cellpadding='0' cellspacing='0' style='border:2px #26FF26 solid;text-align:center;'>");
+         foreach(var i in SummaryList) {       
+            int j = 0;  
+            foreach(var k in i.SummaryData.Keys) {
+                if(j == 0) {  sb.AppendFormat("<tr><td rowspan='{0}'><span style='font-weight:bolder;'>{1}</span></td>", i.SummaryData.Count, i.ServerName); }
+                else { sb.AppendLine("<tr>"); }                      
+                sb.AppendFormat("<td valign='top'><span style='font-weight:bolder;'>{0}</span></td>", k);
+                sb.AppendFormat("<td valign='top'><span style='font-weight:bolder;'>{0}</span></td>", i.SummaryData[k].Total);
+                sb.AppendFormat("<td valign='top'><span style='font-weight:bolder;'>{0}</span></td>", i.SummaryData[k].Error502);
+                sb.AppendLine("</tr>");
+                j++;
+            }
+         }
+         sb.AppendLine("</table>");
 
+         main.AppendLine(sb.ToString());
+         SummaryList.Clear();
+    }
+
+    public void CreateHtmlFile(IEnumerable<LogItem> list) {
+   
         StringBuilder sb = new StringBuilder();
+
+        AppendSummaryToHtml(sb);
+
         sb.AppendLine("<table width='100%' border='0' cellpadding='0' cellspacing='0' bgcolor='#F2F2F2'>");
 
         sb.AppendLine("<tr><td valign='top'>");
@@ -109,10 +176,13 @@ public class ParserHelper
                 sb.AppendLine($"<li>{Item.OriginLine}</li>");
             }
             sb.AppendLine("</ol></td></tr>");
+
+
         }    
 
         sb.AppendLine("</table>");
 
+    
         using (StreamWriter sw = new StreamWriter("result.html"))
         {
             sw.Write(sb.ToString());
