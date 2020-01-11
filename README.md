@@ -34,3 +34,7 @@ git push -u origin master
     python -m pip search "package_name" (搜尋套件模組)
 
 ```
+
+> netsh interface ipv4 show excludedportrange protocol=tcp
+
+> https://my-json-server.typicode.com/\<your-username\>/\<your-repo\> 
