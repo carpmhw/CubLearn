@@ -37,4 +37,4 @@ git push -u origin master
 
 > netsh interface ipv4 show excludedportrange protocol=tcp
 
-> https://my-json-server.typicode.com/\<your-username\>/\<your-repo\> 
+> https://my-json-server.typicode.com/<your-username>/<your-repo> 
