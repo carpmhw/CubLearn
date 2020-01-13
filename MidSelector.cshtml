@@ -1,0 +1,93 @@
+﻿@model string
+
+@{
+    string pName = ViewData.ModelMetadata.PropertyName;
+    string mainId = $"m{DateTime.Now.Ticks.ToString()}";
+
+    string buttonClass = $"btn_{pName}";
+    string textboxClass = $"txt_{pName}";
+    string modalClass = $"modal_{pName}";
+
+    var addtionalValues = ViewData.ModelMetadata.AdditionalValues;
+    var options = ViewData.Keys
+                  .Where(item => item.StartsWith("_"))
+                  .ToDictionary(item => item.Substring(1), item => ViewData[item]);
+}
+
+<div id="@mainId">
+    <div class="input-group">
+        <input type="text" class="form-control @textboxClass" placeholder="MID" aria-label="MID" value="@Model" disabled>
+        <input type="hidden" name="@pName" id="@pName" value="@Model">
+        @Html.HiddenFor(m => m)
+        <div class="input-group-append">
+            <button class="btn btn-success @buttonClass" type="button">選擇</button>
+        </div>
+    </div>
+
+    <div class="modal fade @modalClass" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">選擇 MID</h5>
+                </div>
+
+                <div class="modal-body">
+                    <div class="overflow-auto" style="height:250px">
+                        <div class="list-group">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function templajaxGetMid(dlgModal, url) {
+        $.ajax({
+            type: "get",
+            url: url,
+            data: "",
+            dataType: "json",
+            success: function (response) {
+                switch (response.mList.length) {
+                    case 0:
+                        break;
+                    case 1:
+                        templSetValue(response.mList[0]);
+                        break;
+                    default:
+                        var liseGroup = dlgModal.find('.list-group')[0];
+                        $(liseGroup).empty();
+
+                        for (var i = 0; i < response.mList.length; i++) {
+                            var $a = $('<a class="list-group-item list-group-item-action" href="#">' + response.mList[i] + '</a>')
+                            $a.click(function () {
+                                templSetValue($(this).text());
+                                dlgModal.modal('hide');
+                            });
+                            $(liseGroup).append($a);
+                        }
+                        dlgModal.modal('show');
+                        break;
+                }
+            }
+        });
+    }
+    function templSetValue(value) {
+        $('#@(mainId + " ." + textboxClass)').val(value);
+        $('#@pName').val(value);
+    }
+
+    $(document).ready(function () {
+        var url = "@Url.Content("~/testjson.json")";
+
+        var $modal = $('#@(mainId + " ." + modalClass)');
+        $('#@(mainId + " ." + buttonClass)').click(function () {
+            templajaxGetMid($modal, url);
+        });
+    });
+</script>

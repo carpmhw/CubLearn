@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://coreui.io/demo/3.0-beta.0/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://coreui.io/demo/3.0-beta.0/vendors/@coreui/coreui-pro/js/coreui.bundle.min.js"></script>
+</head>
+
+<body>
+
+    <div class="input-group">
+        <input type="text" name="txtvalue" id="txtvalue" class="form-control" placeholder="MID" aria-label="MID" aria-describedby="btntest" disabled>
+        <input type="hidden" name="hdValue" id="hdValue">
+        <div class="input-group-append">
+            <button class="btn btn-success" type="button" id="btntest">選擇</button>
+        </div>
+    </div>
+
+    <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">選擇 MID</h5> 
+                </div>
+
+                <div class="modal-body">
+                    <div class="overflow-auto" style="height:250px">
+                        <div class="list-group">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function templajaxGetMid(dlgModal, url)
+        {
+            $.ajax({
+                type: "get",
+                url: url,
+                data: "",
+                dataType: "json",
+                success: function (response) {
+                    switch(response.mList.length)
+                    {
+                        case 0:
+                            break;
+                        case 1:
+                            templSetValue(response.mList[0]);
+                            break;
+                        default:
+                            var liseGroup = dlgModal.find('.list-group')[0];
+                            $(liseGroup).empty();
+
+                            for(var i=0; i<response.mList.length; i++) {
+                                var $a = $('<a class="list-group-item list-group-item-action" href="#">' + response.mList[i] + '</a>')
+                                $a.click(function () {
+                                    templSetValue($(this).text());
+                                    dlgModal.modal('hide');
+                                });
+                                $(liseGroup).append($a);
+                            }
+                            dlgModal.modal('show');
+                            break;
+                    }              
+                }
+            });
+        }
+        function templSetValue(value)
+        {
+            $('#txtvalue').val(value);
+            $('#hdValue').val(value);
+        }
+        
+        $(document).ready(function () {
+            var url = "test.json";
+            var buttonName = "btntest";
+            var modalName = "largeModal";
+
+            var $modal = $('#' + modalName);
+            $('#' + buttonName).click(function () {                
+                templajaxGetMid($modal, url);
+            });
+        });
+    </script>
+
+</body>
+
+</html>
