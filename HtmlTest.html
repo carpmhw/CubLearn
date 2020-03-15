@@ -10,49 +10,307 @@
     <link rel="stylesheet" href="https://coreui.io/demo/3.0-beta.0/css/style.css">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://coreui.io/demo/3.0-beta.0/vendors/@coreui/coreui-pro/js/coreui.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css"
+        integrity="sha256-soW/iAENd5uEBh0+aUIS1m2dK4K6qTcB9MLuOnWEQhw=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.js"
+        integrity="sha256-xzc5zu2WQtJgvCwRGTXiHny3T+KQZa6tQF24RVDRlL0=" crossorigin="anonymous"></script>
 </head>
 
 <body>
 
-    <div class="input-group">
-        <input type="text" name="txtvalue" id="txtvalue" class="form-control" placeholder="MID" aria-label="MID" aria-describedby="btntest" disabled>
-        <input type="hidden" name="hdValue" id="hdValue">
-        <div class="input-group-append">
-            <button class="btn btn-success" type="button" id="btntest">選擇</button>
+    <div class="container">
+        <div class="input-group">
+            <input type="text" name="txtvalue" id="txtvalue" class="form-control" placeholder="MID" aria-label="MID"
+                aria-describedby="btntest" disabled>
+            <input type="hidden" name="hdValue" id="hdValue">
+            <div class="input-group-append">
+                <button class="btn btn-success" type="button" id="btntest">選擇</button>
+            </div>
         </div>
-    </div>
 
-    <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">選擇 MID</h5> 
-                </div>
+        <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">選擇 MID</h5>
+                    </div>
 
-                <div class="modal-body">
-                    <div class="overflow-auto" style="height:250px">
-                        <div class="list-group">
+                    <div class="modal-body">
+                        <div class="overflow-auto" style="height:250px">
+                            <div class="list-group">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <div class="mt-2" ng-app="">
+            <p>Name : <input type="text" ng-model="name"></p>
+            <h1>Hello {{name}}</h1>
+        </div>
+
+        <div id="table">
+
+        </div>
+
+        <div id="radioDiv">
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input"
+                    value="1:ABC">
+                <label class="custom-control-label" for="customRadioInline1">ABC</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input"
+                    value="2:poi">
+                <label class="custom-control-label" for="customRadioInline2">poi</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="customRadioInline3" name="customRadioInline2" class="custom-control-input"
+                    value="3:gpx">
+                <label class="custom-control-label" for="customRadioInline3">gpx</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="customRadioInline4" name="customRadioInline2" class="custom-control-input"
+                    value="4:kkkk">
+                <label class="custom-control-label" for="customRadioInline4">kkkk</label>
+            </div>
+            <div>
+                <input class="form-control" type="text" name="" id="radioResult">
+                <button class="btn btn-outline-dark" id="btnRadio">submit</button>
+                <script>
+                    $(document).ready(function () {
+
+                        //$("input:radio:checked").data("chk",true);
+                        $("input[name^='customRadioInline']").click(function () {
+                            $("input[name='" + $(this).attr("name") + "']:radio").not(this).removeData("chk");
+                            $(this).data("chk", !$(this).data("chk"));
+                            $(this).prop("checked", $(this).data("chk"));
+                        });
+
+                        $("#btnRadio").click(function () {
+
+                            var selectRadio = $("input[name^='customRadioInline']:checked");
+                            if (selectRadio.length < 1) {
+                                new Noty({
+                                    type: 'alert',
+                                    theme: 'nest',
+                                    layout: 'topRight',
+                                    text: '請選至少選擇一項',
+                                    timeout: 2000
+                                }).show();
+                            }
+                            var selectList = [];
+                            $("#radioResult").val('');
+                            $.each(selectRadio, function (index, item) {
+                                var splitStr = item.value.split(':');
+                                selectList.push({ "TYPE": splitStr[0], "CODE": splitStr[1] });
+                                $("#radioResult").val(JSON.stringify(selectList));
+                            })
+
+                        });
+
+                    });
+                </script>
+            </div>
+        </div>
+
+
+        <div id="checkboxDiv">
+            <div class="custom-control custom-checkbox custom-control-inline">
+                <input type="checkbox" id="customCheckboxInlin1" name="customCheckboxInlin1"
+                    class="custom-control-input chb" value="1:ABC">
+                <label class="custom-control-label" for="customCheckboxInlin1">ABC</label>
+            </div>
+            <div class="custom-control custom-checkbox custom-control-inline">
+                <input type="checkbox" id="customCheckboxInlin2" name="customCheckboxInlin1"
+                    class="custom-control-input chb" value="2:poi">
+                <label class="custom-control-label" for="customCheckboxInlin2">poi</label>
+            </div>
+            <div class="custom-control custom-checkbox custom-control-inline">
+                <input type="checkbox" id="customCheckboxInlin3" name="customCheckboxInlin2"
+                    class="custom-control-input chb" value="3:gpx">
+                <label class="custom-control-label" for="customCheckboxInlin3">gpx</label>
+            </div>
+            <div class="custom-control custom-checkbox custom-control-inline">
+                <input type="checkbox" id="customCheckboxInlin4" name="customCheckboxInlin2"
+                    class="custom-control-input chb" value="4:kkkk">
+                <label class="custom-control-label" for="customCheckboxInlin4">kkkk</label>
+            </div>
+            <div>
+                <input class="form-control" type="text" name="" id="CheckboxResult">
+                <button class="btn btn-outline-dark" id="btnCheckbox">submit</button>
+                <script>
+                    $(document).ready(function () {
+
+                        $(".chb").change(function () {
+                            //https://stackoverflow.com/questions/5839884/make-checkbox-behave-like-radio-buttons-with-javascript
+                            //https://slavik.meltser.info/make-the-radio-buttons-behave-like-single-choice-checkboxes/
+                            var thisName = $(this).attr("name");
+                            $("input[name='" + thisName + "']").not(this).prop('checked', false);
+                            //$("input[name='" + thisName + "']").prop('checked', false);                    
+                            //$(this).prop('checked', true);
+                        });
+
+                        $("#btnCheckbox").click(function () {
+
+                            var selectCheckbox = $("input[name^='customCheckboxInlin']:checked");
+                            if (selectCheckbox.length < 1) {
+                                new Noty({
+                                    type: 'alert',
+                                    layout: 'topRight',
+                                    theme: 'nest',
+                                    text: '請選至少選擇一項',
+                                    timeout: 2000
+                                }).show();
+                            }
+                            var selectList = [];
+                            $("#CheckboxResult").val('');
+                            $.each(selectCheckbox, function (index, item) {
+                                var splitStr = item.value.split(':');
+                                selectList.push({ "TYPE": splitStr[0], "CODE": splitStr[1] });
+                                $("#CheckboxResult").val(JSON.stringify(selectList));
+                            })
+
+                        });
+
+                    });
+                </script>
+            </div>
+        </div>
+
+        <div class="mt-2">
+            <table id="tbMid" border="1" class="table table-bordered">
+                <tr>
+                    <th class="text-center">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="selectall" name="selectall">
+                            <label class="custom-control-label" for="selectall">Check me out</label>
+                        </div>
+                    </th>
+                    <th>Cell phone</th>
+                    <th>Rating</th>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <div class="form-check">
+                            <input class="form-check-input case" type="checkbox" name="case" value="1" id="gridCheck1">
+                            <label class="form-check-label" for="gridCheck1">
+                                Check me out
+                            </label>
+                        </div>
+                    </td>
+                    <td>BlackBerry Bold 9650</td>
+                    <td>2/5</td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <div class="form-check">
+                            <input class="form-check-input case" type="checkbox" name="case" value="2" id="gridCheck2">
+                            <label class="form-check-label" for="gridCheck2">
+                                Check me out
+                            </label>
+                        </div>
+                    </td>
+                    <td>Samsung Galaxy</td>
+                    <td>3.5/5</td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <div class="form-check">
+                            <input class="form-check-input case" type="checkbox" name="case" value="3" id="gridCheck3">
+                            <label class="form-check-label" for="gridCheck3">
+                                Check me out
+                            </label>
+                        </div>
+                    </td>
+                    <td>Droid X</td>
+                    <td>4.5/5</td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <div class="form-check">
+                            <input class="form-check-input case" type="checkbox" name="case" value="4" id="gridCheck4">
+                            <label class="form-check-label" for="gridCheck4">
+                                Check me out
+                            </label>
+                        </div>
+                    </td>
+                    <td>HTC Desire</td>
+                    <td>3/5</td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <div class="form-check">
+                            <input class="form-check-input case" type="checkbox" name="case" value="5" id="gridCheck5">
+                            <label class="form-check-label" for="gridCheck5">
+                                Check me out
+                            </label>
+                        </div>
+                    </td>
+                    <td>Apple iPhone 4</td>
+                    <td>5/5</td>
+                </tr>
+            </table>
+            <div>
+                <input class="form-control" type="text" name="" id="tableResult">
+                <button class="btn btn-outline-dark" id="btnTable">submit</button>
+            </div>
+        </div>
+
+        <script>
+            $(function () {
+                //https://www.viralpatel.net/multiple-checkbox-select-deselect-jquery-tutorial-example/
+                // add multiple select / deselect functionality
+                $("#selectall").click(function () {
+                    $('.case').prop('checked', this.checked);
+                });
+
+                // if all checkbox are selected, check the selectall checkbox
+                // and viceversa
+                $(".case").click(function () {
+
+                    if ($(".case").length == $(".case:checked").length) {
+                        $("#selectall").prop("checked", "checked");
+                    } else {
+                        $("#selectall").prop("checked", false);
+                    }
+
+                });
+
+                $("#btnTable").click(function () {
+                   
+                    var selectList = [];
+                    $("#tableResult").val('');
+                    
+                    $('#tbMid > tbody  > tr').each(function (index, tr) {
+                        console.log(index);
+                        console.log(tr);
+                    });
+                });
+            });
+        </script>
     </div>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     <script>
-        function templajaxGetMid(dlgModal, url)
-        {
+        function templajaxGetMid(dlgModal, url) {
             $.ajax({
                 type: "get",
                 url: url,
                 data: "",
                 dataType: "json",
                 success: function (response) {
-                    switch(response.mList.length)
-                    {
+                    switch (response.mList.length) {
                         case 0:
                             break;
                         case 1:
@@ -62,7 +320,7 @@
                             var liseGroup = dlgModal.find('.list-group')[0];
                             $(liseGroup).empty();
 
-                            for(var i=0; i<response.mList.length; i++) {
+                            for (var i = 0; i < response.mList.length; i++) {
                                 var $a = $('<a class="list-group-item list-group-item-action" href="#">' + response.mList[i] + '</a>')
                                 $a.click(function () {
                                     templSetValue($(this).text());
@@ -72,26 +330,49 @@
                             }
                             dlgModal.modal('show');
                             break;
-                    }              
+                    }
                 }
             });
         }
-        function templSetValue(value)
-        {
+        function templSetValue(value) {
             $('#txtvalue').val(value);
             $('#hdValue').val(value);
         }
-        
+
         $(document).ready(function () {
             var url = "test.json";
             var buttonName = "btntest";
             var modalName = "largeModal";
 
             var $modal = $('#' + modalName);
-            $('#' + buttonName).click(function () {                
+            $('#' + buttonName).click(function () {
                 templajaxGetMid($modal, url);
             });
+
         });
+
+        $(window).on('load', function () {
+            new Noty({
+                type: 'success',
+                layout: 'topRight',
+                text: 'Some notification text',
+                timeout: 2000
+            }).show();
+        });
+
+        var jsonData = [{ "test": "test", "foo": "foo" }, { "test": "test2", "foo": "foo2" }];
+
+        $table = $("#table");
+        $t = $("<table class='table table-bordered table-sm'>");
+        for (var i in jsonData) {
+            $r = $("<tr>");
+            $.each(jsonData[i], function (key, value) {
+                $r.append($("<td>").html(value));
+            });
+            $t.append($r);
+        }
+        $table.append($t);
+
     </script>
 
 </body>

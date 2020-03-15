@@ -1,0 +1,16 @@
+https://stackoverflow.com/questions/22597277/datepicker-editor-template
+
+@model DateTime?
+<div class='input-group date datePicker'>
+   <span class="input-group-sm">
+      @Html.TextBox("", Model.HasValue ? Model.Value.ToString("d") : String.Empty)
+   </span>
+</div>
+<script type="text/javascript">
+    $(function() {
+        // target only the input in this editor template
+        $('#@Html.IdForModel()').datetimepicker({
+            pickTime: false
+        });
+    });
+</script>
