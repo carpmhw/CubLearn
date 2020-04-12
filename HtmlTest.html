@@ -20,109 +20,155 @@
         integrity="sha256-soW/iAENd5uEBh0+aUIS1m2dK4K6qTcB9MLuOnWEQhw=" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.js"
         integrity="sha256-xzc5zu2WQtJgvCwRGTXiHny3T+KQZa6tQF24RVDRlL0=" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"
+        integrity="sha256-sPB0F50YUDK0otDnsfNHawYmA5M0pjjUf4TvRJkGFrI=" crossorigin="anonymous"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.js"
+        integrity="sha256-XNNC8ESw29iopRLukVRazlP44TxnjGmEQanHJ5kHmtk=" crossorigin="anonymous"></script>
 </head>
 
 <body>
 
     <div class="container">
-        <div class="input-group">
-            <input type="text" name="txtvalue" id="txtvalue" class="form-control" placeholder="MID" aria-label="MID"
-                aria-describedby="btntest" disabled>
-            <input type="hidden" name="hdValue" id="hdValue">
-            <div class="input-group-append">
-                <button class="btn btn-success" type="button" id="btntest">選擇</button>
+        <div class="row">
+
+            <div class="col p-2">
+                <!-- https://blog.darkthread.net/blog/form-target-trick/ -->
+                <!-- <iframe name="resultFrame" style="display:none;"></iframe> -->
+                <form id="form1" action="FormExample.html" target="resultFrame">             
+                    <div>
+                        <div class="validation-summary-valid" data-valmsg-summary="true">
+                            <ul>
+                                <li style="display: none"></li>
+                            </ul>
+                        </div>
+
+                        <input type="text" id="tFixEq" name="tFixEq" data-val="true" data-val-required="不可空白"
+                            data-val-fixeqchk="要輸入A才能過關" data-val-fixeqchk-value="A" class="form-control" />
+                        <span data-valmsg-for="tFixEq" data-valmsg-replace="true" class="form-text text-muted"></span>
+                    </div>
+                    <input type="submit" value="Submit" class="btn btn-outline-dark float-right" />
+                </form>
             </div>
+   
         </div>
 
-        <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">選擇 MID</h5>
+        <div class="row">
+            <div class="col p-2">
+                <div class="input-group">
+                    <input type="text" name="txtvalue" id="txtvalue" class="form-control" placeholder="MID" aria-label="MID"
+                        aria-describedby="btntest" disabled>
+                    <input type="hidden" name="hdValue" id="hdValue">
+                    <div class="input-group-append">
+                        <button class="btn btn-success" type="button" id="btntest">選擇</button>
                     </div>
+                </div>
 
-                    <div class="modal-body">
-                        <div class="overflow-auto" style="height:250px">
-                            <div class="list-group">
+                <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">選擇 MID</h5>
+                            </div>
+        
+                            <div class="modal-body">
+                                <div class="overflow-auto" style="height:250px">
+                                    <div class="list-group">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="mt-2" ng-app="">
-            <p>Name : <input type="text" ng-model="name"></p>
-            <h1>Hello {{name}}</h1>
-        </div>
-
-        <div id="table">
-
-        </div>
-
-        <div id="radioDiv">
-            <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input"
-                    value="1:ABC">
-                <label class="custom-control-label" for="customRadioInline1">ABC</label>
-            </div>
-            <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input"
-                    value="2:poi">
-                <label class="custom-control-label" for="customRadioInline2">poi</label>
-            </div>
-            <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="customRadioInline3" name="customRadioInline2" class="custom-control-input"
-                    value="3:gpx">
-                <label class="custom-control-label" for="customRadioInline3">gpx</label>
-            </div>
-            <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="customRadioInline4" name="customRadioInline2" class="custom-control-input"
-                    value="4:kkkk">
-                <label class="custom-control-label" for="customRadioInline4">kkkk</label>
-            </div>
-            <div>
-                <input class="form-control" type="text" name="" id="radioResult">
-                <button class="btn btn-outline-dark" id="btnRadio">submit</button>
-                <script>
-                    $(document).ready(function () {
-
-                        //$("input:radio:checked").data("chk",true);
-                        $("input[name^='customRadioInline']").click(function () {
-                            $("input[name='" + $(this).attr("name") + "']:radio").not(this).removeData("chk");
-                            $(this).data("chk", !$(this).data("chk"));
-                            $(this).prop("checked", $(this).data("chk"));
-                        });
-
-                        $("#btnRadio").click(function () {
-
-                            var selectRadio = $("input[name^='customRadioInline']:checked");
-                            if (selectRadio.length < 1) {
-                                new Noty({
-                                    type: 'alert',
-                                    theme: 'nest',
-                                    layout: 'topRight',
-                                    text: '請選至少選擇一項',
-                                    timeout: 2000
-                                }).show();
-                            }
-                            var selectList = [];
-                            $("#radioResult").val('');
-                            $.each(selectRadio, function (index, item) {
-                                var splitStr = item.value.split(':');
-                                selectList.push({ "TYPE": splitStr[0], "CODE": splitStr[1] });
-                                $("#radioResult").val(JSON.stringify(selectList));
-                            })
-
-                        });
-
-                    });
-                </script>
+        <div class="row">
+            <div class="col p-2">
+                <div class="mt-2" ng-app="">
+                    <p>Name : <input type="text" ng-model="name"></p>
+                    <h1>Hello {{name}}</h1>
+                </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col p-2">
+                <div id="table">
+                    <div id="radioDiv">
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input"
+                                value="1:ABC">
+                            <label class="custom-control-label" for="customRadioInline1">ABC</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input"
+                                value="2:poi">
+                            <label class="custom-control-label" for="customRadioInline2">poi</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="customRadioInline3" name="customRadioInline2" class="custom-control-input"
+                                value="3:gpx">
+                            <label class="custom-control-label" for="customRadioInline3">gpx</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="customRadioInline4" name="customRadioInline2" class="custom-control-input"
+                                value="4:kkkk">
+                            <label class="custom-control-label" for="customRadioInline4">kkkk</label>
+                        </div>
+                        <div>
+                            <input class="form-control" type="text" name="" id="radioResult">
+                            <button class="btn btn-outline-dark" id="btnRadio">submit</button>
+                            <script>
+                                $(document).ready(function () {
+            
+                                    //$("input:radio:checked").data("chk",true);
+                                    $("input[name^='customRadioInline']").click(function () {
+                                        $("input[name='" + $(this).attr("name") + "']:radio").not(this).removeData("chk");
+                                        $(this).data("chk", !$(this).data("chk"));
+                                        $(this).prop("checked", $(this).data("chk"));
+                                    });
+            
+                                    $("#btnRadio").click(function () {
+            
+                                        var selectRadio = $("input[name^='customRadioInline']:checked");
+                                        if (selectRadio.length < 1) {
+                                            new Noty({
+                                                type: 'alert',
+                                                theme: 'nest',
+                                                layout: 'topRight',
+                                                text: '請選至少選擇一項',
+                                                timeout: 2000
+                                            }).show();
+                                        }
+                                        var selectList = [];
+                                        $("#radioResult").val('');
+                                        $.each(selectRadio, function (index, item) {
+                                            var splitStr = item.value.split(':');
+                                            selectList.push({ "TYPE": splitStr[0], "CODE": splitStr[1] });
+                                            $("#radioResult").val(JSON.stringify(selectList));
+                                        })
+            
+                                    });
+            
+                                });
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col p-2">
+            </div>
+        </div>
+  
+       
 
 
         <div id="checkboxDiv">
@@ -288,10 +334,10 @@
                 });
 
                 $("#btnTable").click(function () {
-                   
+
                     var selectList = [];
                     $("#tableResult").val('');
-                    
+
                     $('#tbMid > tbody  > tr').each(function (index, tr) {
                         console.log(index);
                         console.log(tr);
@@ -375,6 +421,34 @@
 
     </script>
 
+    <script type="text/javascript">
+
+        jQuery.validator.addMethod(
+            "fixeqchk",
+            //示範由params傳入額外參數的玩法
+            //params會等於下方程式中，rules["fixedEqChk"]所指定的內容
+            function (value, elem, params) {
+                return value == params.chkValue;
+            }, "");
+
+        jQuery.validator.unobtrusive.adapters.add(
+            'fixeqchk', ['value'], //另外指定可用data-val-fixeqchk-value設定比對字串
+            function (options) {
+                //如果要傳參數給驗證函數，rules['...]會被傳送成上方addMethod裡
+                //function(value, elem, params)中的params變數
+                options.rules["fixeqchk"] = { chkValue: options.params.value };
+                options.messages["fixeqchk"] = options.message;
+            }
+        );
+            /*重置驗證*/
+            /*
+            var form = $(form);
+            form.removeData('validator');
+            form.removeData('unobtrusiveValidation');
+            $.validator.unobtrusive.parse(form);
+            */            
+
+    </script>
 </body>
 
 </html>

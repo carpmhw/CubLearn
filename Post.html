@@ -1,22 +1,91 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css" integrity="sha256-soW/iAENd5uEBh0+aUIS1m2dK4K6qTcB9MLuOnWEQhw=" crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.js" integrity="sha256-xzc5zu2WQtJgvCwRGTXiHny3T+KQZa6tQF24RVDRlL0=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css"
+        integrity="sha256-soW/iAENd5uEBh0+aUIS1m2dK4K6qTcB9MLuOnWEQhw=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.js"
+        integrity="sha256-xzc5zu2WQtJgvCwRGTXiHny3T+KQZa6tQF24RVDRlL0=" crossorigin="anonymous"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 </head>
+
 <body>
-    <p>TEST</p>
+    <div class="container">
+        <p>TEST</p>
+
+        <select class="form-control" multiple="multiple">
+            <option selected="selected">orange</option>
+            <option>white</option>
+            <option selected="selected">purple</option>
+        </select>
+
+        <button type="button" class="btn btn-primary" id="btnGetValue">Get Value</button>
+        <div class="form-group">
+          <label for="selectOption">Select Option</label>
+          <input type="text"
+            class="form-control" name="selectOption" id="selectOption" aria-describedby="helpId" placeholder="">
+          <small id="helpId" class="form-text text-muted">Help text</small>
+        </div>
+    </div>
 
     <script>
-            new Noty({
-                type: 'success',
-                layout: 'topRight',
-                text: 'Some notification text'
-            }).show();
+        new Noty({
+            type: 'success',
+            layout: 'topRight',
+            text: 'Some notification text'
+        }).show();
+
+        var data = [
+            { 
+                text: "admin", 
+                children : [
+                    { id: 1, text: "Blue" },
+                    { id: 2, text: "David"}
+                ]
+            },
+            { 
+                text: "guest", 
+                children : [
+                    { id: 3, text: "Judy",  "selected": true },
+                    { id: 4, text: "Kate" },
+                    { id: 5, text: "John" },
+                ]
+            }
+        ];
+
+        $('select').select2({
+            createTag: function (params) {
+                var term = $.trim(params.term);
+
+                if (term === '') {
+                    return null;
+                }
+
+                return {
+                    id: term,
+                    text: term,
+                    newTag: true // add additional parameters
+                }
+            },
+            data : data
+        });
+
+        $("#btnGetValue").click(function(){
+            $("#selectOption").val($("select").val());
+        });
     </script>
 </body>
+
 </html>
