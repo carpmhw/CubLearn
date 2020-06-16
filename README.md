@@ -52,3 +52,40 @@ cat access_log |cut -d ' ' -f 1 | sort |uniq -c | sort -nr | awk '{print $0 }' |
 檢視日誌中出現100次以上的IP
 cat access_log |cut -d ' ' -f 1 | sort |uniq -c | awk '{if ($1 > 100) print $0}'｜sort -nr | less
 ```
+
+
+``` C# {.line-numbers}
+移除暫存
+[OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+
+Response.Cache.SetCacheability(HttpCacheability.NoCache);
+Response.Cache.AppendCacheExtension("no-store, must-revalidate");
+Response.AppendHeader("Pragma","no-cache");
+Response.AppendHeader("Expires","0");
+
+//https://stackoverflow.com/questions/10011780/prevent-caching-in-asp-net-mvc-for-specific-actions-using-an-attribute
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+public sealed class NoCacheAttribute : ActionFilterAttribute
+{
+    public override void OnResultExecuting(ResultExecutingContext filterContext)
+    {
+        filterContext.HttpContext.Response.Cache.SetExpires(DateTime.UtcNow.AddDays(-1));
+        filterContext.HttpContext.Response.Cache.SetValidUntilExpires(false);
+        filterContext.HttpContext.Response.Cache.SetRevalidation(HttpCacheRevalidation.AllCaches);
+        filterContext.HttpContext.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+        filterContext.HttpContext.Response.Cache.SetNoStore();
+
+        base.OnResultExecuting(filterContext);
+    }
+}
+```
+
+
+Session SQL Server
+SQL stored procedure做些手腳，讓不同的Apps，指向同一個AppName
+打開預存程序dbo.TempGetAppID
+
+修改 @appName
+
+
+GRANT CREATE SEQUENCE ON SCHEMA::Test TO [AdventureWorks\Larry]
