@@ -8,6 +8,9 @@ git add README.md
 git commit -m "first commit"
 git remote add origin https://github.com/carpmhw/CubLearn.git
 git push -u origin master
+
+匯出特定 commit
+git archive --format zip --output /full/path/to/zipfile.zip 29435bc
 ```
 
 ```Shell {.line-numbers}

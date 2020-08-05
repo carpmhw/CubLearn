@@ -553,6 +553,43 @@
         });
 
     </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/1.0.11/pako.min.js"></script>
+    <script>
+
+            var params = encodeURIComponent(JSON.stringify({
+                title: "标题",
+                content: "内容"
+            }));
+            var test = pako.gzip(params, {to: "string"});
+
+            console.log(test);
+            console.log(btoa(test));
+
+
+            var a = encodeURIComponent("mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&mcase_1=123456789&");
+            console.log("a", a, a.length);
+            var b = pako.gzip(a, {to: "string"});
+
+            var b64 = btoa(b);
+            console.log("b64", b64, b64.length);
+
+            /*
+                byte[] buffer = Convert.FromBase64String("H4sIAAAAAAAAA8tNTixOjTdUNXYxNDI2MTUzt7BUNTLLHRUdFR0VHRUdFR0VHXSiACVOpAW0BgAA");  
+  
+                using (var inStream = new MemoryStream(buffer))  
+                using (var outStream = new MemoryStream())  
+                using (var zip = new System.IO.Compression.GZipStream(inStream, System.IO.Compression.CompressionMode.Decompress))  
+                {  
+                zip.CopyTo(outStream);  
+                zip.Close();  
+
+                string text = System.Web.HttpUtility.UrlDecode(Encoding.UTF8.GetString(outStream.ToArray()));  
+                text.Dump();  
+                }  
+            */
+    </script>
+    
 </body>
 
 </html>
