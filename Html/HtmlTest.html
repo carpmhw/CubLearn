@@ -36,7 +36,7 @@
             <div class="col p-2">
                 <!-- https://blog.darkthread.net/blog/form-target-trick/ -->
                 <!-- <iframe name="resultFrame" style="display:none;"></iframe> -->
-                <form id="form1" action="FormExample.html" target="resultFrame">             
+                <form id="form1" action="FormExample.html" target="resultFrame">
                     <div>
                         <div class="validation-summary-valid" data-valmsg-summary="true">
                             <ul>
@@ -51,14 +51,14 @@
                     <input type="submit" value="Submit" class="btn btn-outline-dark float-right" />
                 </form>
             </div>
-   
+
         </div>
 
         <div class="row">
             <div class="col p-2">
                 <div class="input-group">
-                    <input type="text" name="txtvalue" id="txtvalue" class="form-control" placeholder="MID" aria-label="MID"
-                        aria-describedby="btntest" disabled>
+                    <input type="text" name="txtvalue" id="txtvalue" class="form-control" placeholder="MID"
+                        aria-label="MID" aria-describedby="btntest" disabled>
                     <input type="hidden" name="hdValue" id="hdValue">
                     <div class="input-group-append">
                         <button class="btn btn-success" type="button" id="btntest">選擇</button>
@@ -71,7 +71,7 @@
                             <div class="modal-header">
                                 <h5 class="modal-title">選擇 MID</h5>
                             </div>
-        
+
                             <div class="modal-body">
                                 <div class="overflow-auto" style="height:250px">
                                     <div class="list-group">
@@ -101,23 +101,23 @@
                 <div id="table">
                     <div id="radioDiv">
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input"
-                                value="1:ABC">
+                            <input type="radio" id="customRadioInline1" name="customRadioInline1"
+                                class="custom-control-input" value="1:ABC">
                             <label class="custom-control-label" for="customRadioInline1">ABC</label>
                         </div>
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input"
-                                value="2:poi">
+                            <input type="radio" id="customRadioInline2" name="customRadioInline1"
+                                class="custom-control-input" value="2:poi">
                             <label class="custom-control-label" for="customRadioInline2">poi</label>
                         </div>
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="customRadioInline3" name="customRadioInline2" class="custom-control-input"
-                                value="3:gpx">
+                            <input type="radio" id="customRadioInline3" name="customRadioInline2"
+                                class="custom-control-input" value="3:gpx">
                             <label class="custom-control-label" for="customRadioInline3">gpx</label>
                         </div>
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="customRadioInline4" name="customRadioInline2" class="custom-control-input"
-                                value="4:kkkk">
+                            <input type="radio" id="customRadioInline4" name="customRadioInline2"
+                                class="custom-control-input" value="4:kkkk">
                             <label class="custom-control-label" for="customRadioInline4">kkkk</label>
                         </div>
                         <div>
@@ -125,16 +125,16 @@
                             <button class="btn btn-outline-dark" id="btnRadio">submit</button>
                             <script>
                                 $(document).ready(function () {
-            
+
                                     //$("input:radio:checked").data("chk",true);
                                     $("input[name^='customRadioInline']").click(function () {
                                         $("input[name='" + $(this).attr("name") + "']:radio").not(this).removeData("chk");
                                         $(this).data("chk", !$(this).data("chk"));
                                         $(this).prop("checked", $(this).data("chk"));
                                     });
-            
+
                                     $("#btnRadio").click(function () {
-            
+
                                         var selectRadio = $("input[name^='customRadioInline']:checked");
                                         if (selectRadio.length < 1) {
                                             new Noty({
@@ -152,9 +152,9 @@
                                             selectList.push({ "TYPE": splitStr[0], "CODE": splitStr[1] });
                                             $("#radioResult").val(JSON.stringify(selectList));
                                         })
-            
+
                                     });
-            
+
                                 });
                             </script>
                         </div>
@@ -167,8 +167,8 @@
             <div class="col p-2">
             </div>
         </div>
-  
-       
+
+
 
 
         <div id="checkboxDiv">
@@ -236,76 +236,86 @@
 
         <div class="mt-2">
             <table id="tbMid" border="1" class="table table-bordered">
-                <tr>
-                    <th class="text-center">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="selectall" name="selectall">
-                            <label class="custom-control-label" for="selectall">Check me out</label>
-                        </div>
-                    </th>
-                    <th>Cell phone</th>
-                    <th>Rating</th>
-                </tr>
-                <tr>
-                    <td align="center">
-                        <div class="form-check">
-                            <input class="form-check-input case" type="checkbox" name="case" value="1" id="gridCheck1">
-                            <label class="form-check-label" for="gridCheck1">
-                                Check me out
-                            </label>
-                        </div>
-                    </td>
-                    <td>BlackBerry Bold 9650</td>
-                    <td>2/5</td>
-                </tr>
-                <tr>
-                    <td align="center">
-                        <div class="form-check">
-                            <input class="form-check-input case" type="checkbox" name="case" value="2" id="gridCheck2">
-                            <label class="form-check-label" for="gridCheck2">
-                                Check me out
-                            </label>
-                        </div>
-                    </td>
-                    <td>Samsung Galaxy</td>
-                    <td>3.5/5</td>
-                </tr>
-                <tr>
-                    <td align="center">
-                        <div class="form-check">
-                            <input class="form-check-input case" type="checkbox" name="case" value="3" id="gridCheck3">
-                            <label class="form-check-label" for="gridCheck3">
-                                Check me out
-                            </label>
-                        </div>
-                    </td>
-                    <td>Droid X</td>
-                    <td>4.5/5</td>
-                </tr>
-                <tr>
-                    <td align="center">
-                        <div class="form-check">
-                            <input class="form-check-input case" type="checkbox" name="case" value="4" id="gridCheck4">
-                            <label class="form-check-label" for="gridCheck4">
-                                Check me out
-                            </label>
-                        </div>
-                    </td>
-                    <td>HTC Desire</td>
-                    <td>3/5</td>
-                </tr>
-                <tr>
-                    <td align="center">
-                        <div class="form-check">
-                            <input class="form-check-input case" type="checkbox" name="case" value="5" id="gridCheck5">
-                            <label class="form-check-label" for="gridCheck5">
-                                Check me out
-                            </label>
-                        </div>
-                    </td>
-                    <td>Apple iPhone 4</td>
-                    <td>5/5</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="selectall" name="selectall">
+                                <label class="custom-control-label" for="selectall">Check me out</label>
+                            </div>
+                        </th>
+                        <th>Cell phone</th>
+                        <th>Rating</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td align="center">
+                            <div class="form-check">
+                                <input class="form-check-input case" type="checkbox" name="case" value="1"
+                                    id="gridCheck1">
+                                <label class="form-check-label" for="gridCheck1">
+                                    Check me out
+                                </label>
+                            </div>
+                        </td>
+                        <td>BlackBerry Bold 9650</td>
+                        <td>2/5</td>
+                    </tr>
+                    <tr>
+                        <td align="center">
+                            <div class="form-check">
+                                <input class="form-check-input case" type="checkbox" name="case" value="2"
+                                    id="gridCheck2">
+                                <label class="form-check-label" for="gridCheck2">
+                                    Check me out
+                                </label>
+                            </div>
+                        </td>
+                        <td>Samsung Galaxy</td>
+                        <td>3.5/5</td>
+                    </tr>
+                    <tr>
+                        <td align="center">
+                            <div class="form-check">
+                                <input class="form-check-input case" type="checkbox" name="case" value="3"
+                                    id="gridCheck3">
+                                <label class="form-check-label" for="gridCheck3">
+                                    Check me out
+                                </label>
+                            </div>
+                        </td>
+                        <td>Droid X</td>
+                        <td>4.5/5</td>
+                    </tr>
+                    <tr>
+                        <td align="center">
+                            <div class="form-check">
+                                <input class="form-check-input case" type="checkbox" name="case" value="4"
+                                    id="gridCheck4">
+                                <label class="form-check-label" for="gridCheck4">
+                                    Check me out
+                                </label>
+                            </div>
+                        </td>
+                        <td>HTC Desire</td>
+                        <td>3/5</td>
+                    </tr>
+                    <tr>
+                        <td align="center">
+                            <div class="form-check">
+                                <input class="form-check-input case" type="checkbox" name="case" value="5"
+                                    id="gridCheck5">
+                                <label class="form-check-label" for="gridCheck5">
+                                    Check me out
+                                </label>
+                            </div>
+                        </td>
+                        <td>Apple iPhone 4</td>
+                        <td>5/5</td>
+                    </tr>
+                </tbody>
             </table>
             <div>
                 <input class="form-control" type="text" name="" id="tableResult">
@@ -338,10 +348,19 @@
                     var selectList = [];
                     $("#tableResult").val('');
 
-                    $('#tbMid > tbody  > tr').each(function (index, tr) {
+                    $('#tbMid > tbody > tr').each(function (index, tr) {
                         console.log(index);
-                        console.log(tr);
+                       
+                        var id = $(tr).find('td').eq(1).text().trim();
+
+                        var cb = $(tr).find('input[name="case"]:checked');
+                        if(cb.length != 0)  {
+                            var sys = cb.map(function() { return $(this).val(); }).get();
+                            selectList.push({ id: id, sys: sys})
+                        }                   
                     });
+                    
+                    console.log(selectList);
                 });
             });
         </script>
@@ -441,14 +460,15 @@
             }
         );
             /*重置驗證*/
-            /*
-            var form = $(form);
-            form.removeData('validator');
-            form.removeData('unobtrusiveValidation');
-            $.validator.unobtrusive.parse(form);
-            */            
+        /*
+        var form = $(form);
+        form.removeData('validator');
+        form.removeData('unobtrusiveValidation');
+        $.validator.unobtrusive.parse(form);
+        */
 
     </script>
+
 </body>
 
 </html>

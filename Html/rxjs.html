@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>RxJS Practice</title>
+  </head>
+  <body>
+    <script src="https://unpkg.com/@reactivex/rxjs@6.0.0/dist/global/rxjs.umd.js"></script>
+    <script>
+      rxjs
+        .fromEvent(document, 'click')
+        .pipe(
+          rxjs.operators.filter((_, index) => index % 2 === 0),
+          rxjs.operators.map((event) => ({ x: event.x, y: event.y }))
+        )
+        .subscribe((position) => {
+          console.log(`x: ${position.x}, y: ${position.y}`);
+        });
+    </script>
+  </body>
+</html>
